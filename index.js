@@ -152,6 +152,12 @@ async function run() {
             res.send(result);
         })
 
+        app.delete("/meals/:id", async (req, res) => {
+            const id = req.params.id;
+            const query = { _id: new ObjectId(id) }
+            const result = await mealCollection.deleteOne(query)
+            res.send(result);
+        })
 
         //   requested meal collection
 
@@ -192,14 +198,14 @@ async function run() {
             const result = await upcomingmealCollection.find().toArray();//find data in array
             res.send(result);
         })
-        // insert data in the database where there is a collection named carts
+        // insert data in the database 
         app.post("/upcoming", async (req, res) => {
             const upcomingItem = req.body;
             const result = await upcomingmealCollection.insertOne(upcomingItem)
             res.send(result);
         })
 
-        // delete data from the database where there is a collection named carts
+        // delete data from the database 
         app.delete("/review/:id", async (req, res) => {
             const id = req.params.id;
             const query = { _id: new ObjectId(id) }
