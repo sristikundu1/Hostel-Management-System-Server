@@ -188,6 +188,17 @@ async function run() {
             res.send(result);
         })
 
+        app.get("/upcoming", async (req, res) => {
+            const result = await upcomingmealCollection.find().toArray();//find data in array
+            res.send(result);
+        })
+        // insert data in the database where there is a collection named carts
+        app.post("/upcoming", async (req, res) => {
+            const upcomingItem = req.body;
+            const result = await upcomingmealCollection.insertOne(upcomingItem)
+            res.send(result);
+        })
+
         // delete data from the database where there is a collection named carts
         app.delete("/review/:id", async (req, res) => {
             const id = req.params.id;
@@ -216,7 +227,7 @@ async function run() {
 
 
         // Send a ping to confirm a successful connection
-        await client.db("admin").command({ ping: 1 });
+        // await client.db("admin").command({ ping: 1 });
         console.log("Pinged your deployment. You successfully connected to MongoDB!");
     } finally {
         // Ensures that the client will close when you finish/error
