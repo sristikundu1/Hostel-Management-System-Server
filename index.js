@@ -152,6 +152,15 @@ async function run() {
             res.send(result);
         })
 
+        app.get("/meals/:id", async (req, res) => {
+            const id = req.params.id;
+            const query = { _id: new ObjectId(id) } //unique objectId to delete one data
+            const result = await mealCollection.findOne(query);
+            res.send(result);
+           
+           
+        })
+
         app.delete("/meals/:id", async (req, res) => {
             const id = req.params.id;
             const query = { _id: new ObjectId(id) }
@@ -159,9 +168,27 @@ async function run() {
             res.send(result);
         })
 
+        app.get("/upcoming", async (req, res) => {
+            const result = await upcomingmealCollection.find().toArray();//find data in array
+            res.send(result);
+        })
+        // insert data in the database 
+        app.post("/upcoming", async (req, res) => {
+            const upcomingItem = req.body;
+            const result = await upcomingmealCollection.insertOne(upcomingItem)
+            res.send(result);
+        })
+
         //   requested meal collection
 
         // show all the data in carts router in the server site that i added from client side
+        app.get("/allrequest", async (req, res) => {
+            // const email = req.query.email;
+            // const query = { email: email }
+            const result = await requestmealCollection.find().toArray();
+            res.send(result);
+
+        })
         app.get("/request", async (req, res) => {
             const email = req.query.email;
             const query = { email: email }
@@ -194,16 +221,7 @@ async function run() {
             res.send(result);
         })
 
-        app.get("/upcoming", async (req, res) => {
-            const result = await upcomingmealCollection.find().toArray();//find data in array
-            res.send(result);
-        })
-        // insert data in the database 
-        app.post("/upcoming", async (req, res) => {
-            const upcomingItem = req.body;
-            const result = await upcomingmealCollection.insertOne(upcomingItem)
-            res.send(result);
-        })
+       
 
         // delete data from the database 
         app.delete("/review/:id", async (req, res) => {
